@@ -8,8 +8,8 @@ function App () {
 
   async function fetchData (params) {
     try {
-      const response = await axios.get(`http://localhost:3001/`)
-      console.log(response)
+      const { data } = await axios.get(`http://localhost:3001/`)
+      console.log(data)
     } catch (error) {
       console.error(error)
     }
