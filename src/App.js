@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-// import logo from './logo.svg';
+
+import AnimeItem from './Components/animeItem'
 import './App.css'
 
 function App () {
@@ -35,26 +36,7 @@ function App () {
       <button onClick={() => fetchData('single')}>Fetch anime</button>
       <button onClick={() => fetchData('all')}>Fetch anime in DB</button>
       <button onClick={() => console.log(anime)}>Get State</button>
-      <div className='list'>
-        {Object.entries(anime).length !== 0 && anime.constructor === Object ? (
-          <div>
-            <span>
-              <h2>{anime.name}</h2> {anime.type}
-            </span>
-            <p>{anime.background.toString()}</p>
-            <p>This anime aired on {anime.aired}</p>
-            <p>This anime has {anime.status}</p>
-            <ul>
-              Producers:{' '}
-              {anime.producers.forEach(item => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <div />
-        )}
-      </div>
+      <AnimeItem anime={anime} />
     </div>
   )
 }
