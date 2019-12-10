@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 // import logo from './logo.svg';
 import './App.css'
 
 function App () {
-  const [data, setData] = useState({})
+  const [id, setId] = useState('')
+  const [anime, setAnime] = useState({})
 
-  async function fetchData (params) {
+  async function fetchData (type) {
     try {
-      const { data } = await axios.get(`http://localhost:3001/`)
-      console.log(data)
+      if (type === 'single') {
+        const { data } = await axios.get(`http://localhost:3001/getAnime/${id}`)
+        setAnime(await data)
+      } else {
+        const { data } = await axios.get(`http://localhost:3001/getAllAnime`)
+        console.log(data)
+      }
     } catch (error) {
       console.error(error)
     }
@@ -24,18 +30,30 @@ function App () {
   return (
     <div>
       <h1>Welcome to anime app</h1>
-      <button onClick={() => fetchData()}>Fetch anime</button>
+      <h4>{id}</h4>
+      <input type='text' onChange={e => setId(e.target.value)} />
+      <button onClick={() => fetchData('single')}>Fetch anime</button>
+      <button onClick={() => fetchData('all')}>Fetch anime in DB</button>
+      <button onClick={() => console.log(anime)}>Get State</button>
       <div className='list'>
-        {/* {data.length ? (
-          data.map(({ attributes: item }) => (
-            <div style={{ padding: '2rem' }} className='item_container'>
-              <div>{item.titles.en}</div>
-              <div>{item.synopsis}</div>
-            </div>
-          ))
+        {Object.entries(anime).length !== 0 && anime.constructor === Object ? (
+          <div>
+            <span>
+              <h2>{anime.name}</h2> {anime.type}
+            </span>
+            <p>{anime.background.toString()}</p>
+            <p>This anime aired on {anime.aired}</p>
+            <p>This anime has {anime.status}</p>
+            <ul>
+              Producers:{' '}
+              {anime.producers.forEach(item => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
         ) : (
           <div />
-        )} */}
+        )}
       </div>
     </div>
   )
